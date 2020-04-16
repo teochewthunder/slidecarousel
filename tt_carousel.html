@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Slide Carousel</title>
+
+		<style>
+			div {outline: 0px solid #FF0000;}
+			
+			body
+			{
+				font-size: 12px;
+				font-family: verdana;
+			}
+
+			#carouselContainer
+			{
+				width: 800px;
+				height: 600px;
+				margin: 0 auto 0 auto;
+			}
+
+			.margin
+			{
+				width: 10%;
+				height: 100px;
+				float: left;
+				text-align: center;
+				font-size: 5em;
+			}
+
+			.margin input[type="button"]
+			{
+				color: rgba(0, 0, 0, 1);
+				cursor: pointer;
+				margin-top: 250px;
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				border: 0px solid red;
+				background-color: rgba(255, 200, 0, 1);
+				color: rgba(255, 255, 255, 1);
+			}
+
+			.margin input[type="button"]:hover
+			{
+				background-color: rgba(255, 200, 0, 0.5);
+			}
+
+			#viewport
+			{
+				width: 80%;
+				height: 100%;
+				float: left;
+				overflow: hidden;
+				border-radius: 15px;
+			}
+
+			#contentContainer
+			{
+				width: 200%;
+				height: 100%;
+				background-color: #004400;
+			}
+
+			.content
+			{
+				width: 50%;
+				height: 100%;
+				float: left;
+				background-color: #000044;
+				background-size: cover;
+				background-position: 50% 50%;
+				background-repeat: no-repeat;				
+			}
+
+			.content div
+			{
+				padding: 1em;
+				background-color: rgba(255, 255, 255, 0.5);
+				color: rgba(0, 0, 0, 1);
+				font-weight: bold;
+				width: 80%;
+				border-radius: 5px;
+				margin: 1em auto 0 auto;
+			}
+		</style>
+
+		<script>
+			var carousel = 
+			{
+				slides: 
+				[
+					{
+						bg: "00.jpg",
+						content: "<div><h2>Phasellus ullamcorper</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent fringilla molestie pellentesque. Aliquam auctor scelerisque mattis. Donec maximus ipsum non eros gravida suscipit. Sed vulputate massa orci, non placerat lectus suscipit mollis. Fusce faucibus lorem eu lectus mattis, et dictum urna semper. Maecenas massa magna, commodo at pulvinar ac, lacinia nec augue. Nullam pretium consectetur ultricies. In a mattis justo. Suspendisse potenti. Vivamus scelerisque, urna imperdiet faucibus facilisis, orci elit dictum ex, blandit rutrum metus diam eget mi. Phasellus ullamcorper eu purus eu venenatis. Nullam vestibulum dolor vel felis facilisis, ac rutrum tellus rutrum. Sed vehicula elementum erat, eget mattis tortor rhoncus a. Phasellus ut nisl volutpat, dictum lectus ut, dictum lectus.</p><h2>Quisque pharetra</h2><p>Lorem ipsum vel felis facilisis, ac rutrum tellus rutrum. Sed vehicula elementum erat, eget mattis tortor rhoncus a.</p><p>Vestibulum porta mattis quam a gravida. Aliquam quis quam nulla.</p></div>"
+					},
+					{
+						bg: "01.jpg",
+						content: "<div><h2>Phasellus mattis</h2><p>Lorem ipsum vel felis facilisis, ac rutrum tellus rutrum. Sed vehicula elementum erat, eget mattis tortor rhoncus a.</p></div>"
+					},
+					{
+						bg: "02.jpg",
+						content: "<div><h2>In diam nisi erat</h2><p>Vestibulum porta mattis quam a gravida. Aliquam quis quam nulla. Pellentesque nisi erat, elementum ut maximus sed, euismod vel dui. Curabitur vitae dui nec justo rhoncus imperdiet. In diam risus, egestas dictum viverra vel, pretium sed nisl.</p></div>"
+					},
+					{
+						bg: "03.jpg",
+						content: "<div><h2>Nullam ullamcorper</h2><p>Lorem ipsum scelerisque, urna imperdiet faucibus facilisis, orci elit dictum ex, blandit rutrum metus diam eget mi. Phasellus ullamcorper eu purus eu venenatis. Nullam vestibulum dolor vel felis facilisis, ac rutrum tellus rutrum. Sed vehicula elementum erat, eget mattis tortor rhoncus a. Phasellus ut nisl volutpat, dictum lectus ut, dictum lectus.</p><h2>Quisque pharetra</h2><p><img src='img/03.jpg' height='150' align='right' />Vestibulum porta mattis quam a gravida. Aliquam quis quam nulla. Pellentesque nisi erat, elementum ut maximus sed, euismod vel dui. Curabitur vitae dui nec justo rhoncus imperdiet. In diam risus, egestas dictum viverra vel, pretium sed nisl. Nam mi risus, imperdiet sed purus id, posuere feugiat nibh. Curabitur dignissim ipsum eget est pretium, ut luctus leo dapibus. Praesent in vehicula felis. Nullam quis faucibus justo. Praesent ac turpis tempor elit lobortis sodales laoreet pulvinar velit. Nam vel leo arcu. Cras magna nulla, lacinia in turpis vel, efficitur sagittis sem. Interdum et malesuada fames ac ante ipsum primis in faucibus. In congue consectetur lacus, ac venenatis elit gravida at.</p></div>"
+					},
+					{
+						bg: "04.jpg",
+						content: "<div><h2>Quisque pharetra</h2><p>Quisque eget aliquam urna. Integer tortor justo, fringilla ut diam in, ornare maximus sem. Nam dictum mauris nisl, id posuere sem sodales sit amet. Sed ac nulla ut nunc molestie vestibulum id a ipsum. Duis nec elementum libero. Etiam porttitor turpis eu venenatis porta. Quisque pharetra diam vel dui porta luctus. Duis sed odio viverra, molestie orci et, hendrerit erat. Duis ut tortor nec orci suscipit finibus nec non massa. </p></div>"
+					}
+				],
+				currentSlideIndex: 0,
+				contentContainer: undefined,
+				c0: undefined,
+				c1: undefined,
+				canMove: true,
+				begin: function()
+				{
+					this.contentContainer = document.getElementById("contentContainer");
+					this.c0 = document.getElementById("content0");
+					this.c1 = document.getElementById("content1");
+
+					this.setContent(this.currentSlideIndex + 1, "left");
+
+					setInterval
+					(
+						function()
+						{
+							carousel.animateSlider();
+						},
+						5000
+					);					
+				},		
+				animateSlider: function()
+				{
+					if (this.canMove)
+					{
+						this.slide("left");	
+					}
+				},				
+				slide: function(dir)
+				{
+					var nextSlide;
+					var currentMarginLeft;
+					var nextMarginLeft;
+
+					this.setTransitionSpeed(0);
+
+					if (dir == "left")
+					{
+						if (this.currentSlideIndex == this.slides.length - 1)
+						{
+							nextSlide = 0;
+						}
+						else
+						{
+							nextSlide = this.currentSlideIndex + 1;
+						}
+
+						currentMarginLeft = 0;
+						nextMarginLeft = -100;
+					}
+
+					if (dir == "right")
+					{
+						if (this.currentSlideIndex == 0)
+						{
+							nextSlide = this.slides.length - 1;
+						}
+						else
+						{
+							nextSlide = this.currentSlideIndex - 1;
+						}	
+
+						currentMarginLeft = -100;
+						nextMarginLeft = 0;
+					}
+
+					this.setMargin(currentMarginLeft);
+					this.setContent(nextSlide, dir);
+
+					setTimeout
+					(
+						function()
+						{
+							carousel.setTransitionSpeed(1);
+						},
+						250
+					);
+
+					setTimeout
+					(
+						function()
+						{
+							carousel.setMargin(nextMarginLeft);
+							carousel.currentSlideIndex = nextSlide;
+						},
+						500
+					);
+
+					setTimeout
+					(
+						function()
+						{
+							carousel.canMove = true;
+						},
+						5000
+					);
+				},
+				setTransitionSpeed: function(interval)
+				{
+					this.contentContainer.style.webKitTransition = interval + "s all";
+					this.contentContainer.style.transition = interval + "s all";
+				},
+				setMargin: function(margin)
+				{
+					this.contentContainer.style.marginLeft = margin + "%";
+				},
+				setContent: function(next, dir)
+				{
+					if (dir == "left")
+					{
+						this.c0.innerHTML = this.slides[this.currentSlideIndex].content;
+						this.c0.style.backgroundImage = "url(img/" + this.slides[this.currentSlideIndex].bg + ")";
+
+						this.c1.innerHTML = this.slides[next].content;
+						this.c1.style.backgroundImage = "url(img/" + this.slides[next].bg + ")";
+					}
+
+					if (dir == "right")
+					{
+						this.c0.innerHTML = this.slides[next].content;
+						this.c0.style.backgroundImage = "url(img/" + this.slides[next].bg + ")";
+
+						this.c1.innerHTML = this.slides[this.currentSlideIndex].content;
+						this.c1.style.backgroundImage = "url(img/" + this.slides[this.currentSlideIndex].bg + ")";
+					}
+				},
+				sliderButtonClick: function(dir)
+				{
+					this.slide(dir);
+				}
+			}
+		</script>
+	</head>
+
+	<body onload = "carousel.begin();">
+		<div id="carouselContainer">
+			<div class="margin">
+				<input type="button" onclick="carousel.sliderButtonClick('left')" value="&#9668;"/>
+			</div>
+
+			<div id="viewport">
+				<div id="contentContainer">
+					<div id="content0" class="content"></div>
+					<div id="content1" class="content"></div>
+				</div>
+			</div>
+
+			<div class="margin">
+				<input type="button" onclick="carousel.sliderButtonClick('right')" value="&#9658;"/>
+			</div>	
+		</div>
+	</body>
+</html>
